@@ -39,6 +39,9 @@
             return fn;
         }
 
+        function testAlert(){
+            alert(navigator.userAgent)
+        }
         function alertResult(errCode, errMsg, result) {
             console.log(errCode, errMsg, result)
             if (errCode != 0) {
@@ -374,6 +377,8 @@
     </script>
 </head>
 <body>
+<span onclick="testAlert()">显示UA</span>
+<br/>
 <span onclick="testGetBaseApi()">获取基本接口地址</span>
 <br/>
 <span onclick="testIsLogin()">检测是否登录</span>
@@ -457,7 +462,7 @@
 <span onclick="testStartTask()">任务墙-启动任务</span>
 <br/>
 <span onclick="testRedPacketUrl()">拆红包</span>
-<br/>
+
 <br/>
 
 
