@@ -77,7 +77,7 @@
         }
         //测试请求接口
         function testGetUrl() {
-            var url = "http://159.89.245.190/apitest.json?random=" + Math.random()
+            var url = "https://api.toutiaoduoduo.com/app/getWeiInfo?wei_id=w003&random=" + Math.random()
             appExecute("getUrl", url, genCallback(function (errCode, errMsg, result) {
                 alertResult(errCode, errMsg, result)
             }))
