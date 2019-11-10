@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Flutter Dev Test</title>
+    <title>Risapp Dev Test</title>
     <style type="text/css">
         .button {
             background-color: lightskyblue;
@@ -30,12 +30,13 @@
     </style>
     <script type="text/javascript">
         var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-        function testConsoleLog() {
+        function destroyPage() {
             console.log(isiOS)
-            var actionData = "console log message ^_^";
+            var actionData = {cmd:'destroyPage',param:'xxxx'};
             if (isiOS) {
                 try {
-                    webkit.messageHandlers.JXiOS.postMessage(actionData);
+                    //webkit.messageHandlers.JXiOS.postMessage(actionData);
+                    window.webkit.messageHandlers.golemonWebview.postMessage(actionData);
                 } catch (error) {
                     console.error('ios context not exist ');
                 }
@@ -55,7 +56,7 @@
     <div style="width: 100%;">
     <button onclick="testAlert()" class="button">显示UA</button>
     <br>
-    <button onclick="testConsoleLog()" class="button">测试console log</button>
+    <button onclick="destroyPage()" class="button">destroyPage</button>
     <hr align="center" width="90%">
 </div>
 </body>
