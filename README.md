@@ -1,6 +1,9 @@
 # dev.github.io
 
-头条多多测试页面 https://bineanzhou.github.io/dev.github.io/ttdd_test.html
+## ttdd
+https://bineanzhou.github.io/dev.github.io/dev_ttdd.html
+## risapp
+https://bineanzhou.github.io/dev.github.io/dev_risapp.html
 
 # 交互说明
 ## iOS
