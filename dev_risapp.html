@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Flutter Dev Test</title>
+    <style type="text/css">
+        .button {
+            background-color: lightskyblue;
+            /* Green */
+            border: none;
+            color: white;
+            padding:10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            margin: 2%
+        }
+
+        hr {
+            border: 2px solid #987cb9;
+            border-radius: 1px;
+        }
+    </style>
+    <script type="text/javascript">
+        var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        function testConsoleLog() {
+            console.log(isiOS)
+            var actionData = "console log message ^_^";
+            if (isiOS) {
+                try {
+                    webkit.messageHandlers.JXiOS.postMessage(actionData);
+                } catch (error) {
+                    console.error('ios context not exist ');
+                }
+            } else {
+                console.log(actionData)
+            }
+        }
+
+        function testAlert() {
+            alert(navigator.userAgent)
+        }
+
+    </script>
+</head>
+
+<body>
+    <div style="width: 100%;">
+    <button onclick="testAlert()" class="button">显示UA</button>
+    <br>
+    <button onclick="testConsoleLog()" class="button">测试console log</button>
+    <hr align="center" width="90%">
+</div>
+</body>
+
+</html>
