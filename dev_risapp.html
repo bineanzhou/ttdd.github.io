@@ -51,7 +51,6 @@
             var actionData = {cmd:'login'};
             if (isiOS) {
                 try {
-                    //webkit.messageHandlers.JXiOS.postMessage(actionData);
                     window.webkit.messageHandlers.golemonWebview.postMessage(actionData);
                 } catch (error) {
                     console.error('ios context not exist ');
@@ -59,6 +58,30 @@
             } else {
                 console.log(actionData)
             }
+        }
+
+        function getBaseInfo() {
+            console.log(isiOS)
+            var actionData = {cmd:'getBaseInfo'};
+            if (isiOS) {
+                try {
+                    window.webkit.messageHandlers.golemonWebview.postMessage(actionData);
+                } catch (error) {
+                    console.error('ios context not exist ');
+                }
+            } else {
+                console.log(actionData)
+            }
+        }
+
+        function getBaseInfoResult(str) {
+                asyncAlert(str);
+        }
+
+        function asyncAlert(content) {
+                setTimeout(function(){
+                           alert(content);
+                           },1);
         }
 
         function testAlert() {
@@ -78,7 +101,8 @@
     <button onclick="destroyPage()" class="button">返回</button>
     <br>
     <button onclick="login()" class="button">login</button>
-
+    <br>
+    <button onclick="getBaseInfo()" class="button">getBaseInfo</button>
     </div>
     
     <hr align="center" width="90%">
