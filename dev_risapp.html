@@ -32,7 +32,7 @@
         var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         function destroyPage() {
             console.log(isiOS)
-            var actionData = {cmd:'destroyPage',param:'xxxx'};
+            var actionData = {cmd:'destroyPage',param:{p1:"xx1",p2:"xxx2"}}};
             if (isiOS) {
                 try {
                     //webkit.messageHandlers.JXiOS.postMessage(actionData);
