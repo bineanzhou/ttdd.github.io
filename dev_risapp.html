@@ -46,6 +46,21 @@
             }
         }
 
+        function login() {
+            console.log(isiOS)
+            var actionData = {cmd:'login'};
+            if (isiOS) {
+                try {
+                    //webkit.messageHandlers.JXiOS.postMessage(actionData);
+                    window.webkit.messageHandlers.golemonWebview.postMessage(actionData);
+                } catch (error) {
+                    console.error('ios context not exist ');
+                }
+            } else {
+                console.log(actionData)
+            }
+        }
+
         function testAlert() {
             alert(navigator.userAgent)
         }
@@ -60,7 +75,9 @@
     <button onclick="testAlert()" class="button">显示UA</button>
     <br>
     <hr align="center" width="90%">
-    <button onclick="destroyPage()" class="button">destroyPage</button>
+    <button onclick="destroyPage()" class="button">返回</button>
+    </div>
+    <button onclick="login()" class="button">login</button>
     </div>
     <hr align="center" width="90%">
 </div>
