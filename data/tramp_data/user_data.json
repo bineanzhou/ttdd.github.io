@@ -1,0 +1,9 @@
+{
+    "errno": 0,
+    "errmsg": "ok",
+    "data": {
+      "id":"123456",
+      "phone_num":"15022303019",
+      "avatar":"https://p1.ssl.qhimgs1.com/sdr/400__/t0151945703ead8e207.jpg"
+    }
+  }
