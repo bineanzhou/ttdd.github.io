@@ -7,7 +7,7 @@
 
 # mock data
 ## tramp
-[user_data.json](https://bineanzhou.github.io/dev.github.io/tramp_data/user_data.json)
+[user_data.json](https://bineanzhou.github.io/dev.github.io/data/tramp_data/user_data.json)
 
 # 交互说明
 ## iOS
