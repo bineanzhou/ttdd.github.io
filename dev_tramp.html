@@ -55,28 +55,7 @@
         }
   </script>
   </head>
-  
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $("#execute").on("click", function(event) {
-        var name = $("#inputFn")
-          .val()
-          .replace(/ /g, "");
-        let postdata = $("#textareaId")
-          .val()
-          .replace(/ /g, "");
-        
-        window.Qtramp.postMessage(
-          name,
-          postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
-        ).then(function(res) {
-          console.log("-------------------------");
-          console.log(res);
-          console.log("-------------------------");
-        });
-      });
-    });
-  </script>
+
   <body>
     <div style="text-align:center">
             参数JSON<br />
@@ -100,5 +79,25 @@
         <br>
         <hr align="center" width="90%">
   </body>
-  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#execute").on("click", function(event) {
+        var name = $("#inputFn")
+          .val()
+          .replace(/ /g, "");
+        let postdata = $("#textareaId")
+          .val()
+          .replace(/ /g, "");
+        
+        window.Qtramp.postMessage(
+          name,
+          postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
+        ).then(function(res) {
+          console.log("-------------------------");
+          console.log(res);
+          console.log("-------------------------");
+        });
+      });
+    });
+  </script>
 </html>
