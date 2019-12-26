@@ -46,7 +46,7 @@
         let postdata = $("#textareaId")
           .val()
           .replace(/ /g, "");
-        Qtramp.execute(
+        Qtramp.postMessage(
           name,
           postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
         ).then(function(res) {
