@@ -81,6 +81,7 @@
   </body>
   <script type="text/javascript" src="https://s4.ssl.qhres.com/!2656994b/zepto.v11.js"></script>
   <script type="text/javascript">
+
     $(document).ready(function() {
       $("#execute").on("click", function(event) {
         var name = $("#inputFn")
@@ -90,14 +91,16 @@
           .val()
           .replace(/ /g, "");
         
+      });
+    });
+    window.Qtramp.postMessage(name, postdata)
+  </script>
+  <!--
         window.Qtramp.postMessage(name,JSON.stringify({
             a:{b:1},
             data:{
                 k:'fhowejfjwoej'
             }
         }
-        ));
-      });
-    });
-  </script>
+        ));-->
 </html>
