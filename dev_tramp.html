@@ -85,15 +85,10 @@
 
     $(document).ready(function() {
       $("#execute").on("click", function(event) {
-        var name = $("#inputFn")
-          .val()
-          .replace(/ /g, "");
-        let postdata = $("#textareaId")
-          .val()
-          .replace(/ /g, "");
-
-      var name = $('#inputFn').val().replace(/ /g, '');
-            let postdata = $('#textareaId').val().replace(/ /g, '');
+        var name = $("#inputFn").val().replace(/ /g, "");
+        let postdata = $("#textareaId").val().replace(/ /g, "");
+        // alert('1')
+        var name = $('#inputFn').val().replace(/ /g, '');
             WebviewInterface.execute(name, postdata.indexOf('}') > -1 ? JSON.parse(postdata) : postdata).then(function (res) {
                 console.log('-------------------------');
                 console.log(res);
