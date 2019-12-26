@@ -72,10 +72,10 @@
           
           <br />
         客户端方法名
-        <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" class="content" />
+        <input type="text" id="inputFn" placeholder="wvproxyPost" value="wvproxyPost" class="content" />
         <br />
-        <button id="execute" class="button">postMessage</button>
-        <button onclick="testPostMsg()" class="button">测试</button>
+        <button id="postMessage" class="button">postMessage</button>
+        <button id="taskDispatch" class="button">运动赚</button>
         <br>
         <hr align="center" width="90%">
   </body>
@@ -84,12 +84,28 @@
   <script type="text/javascript">
 
     $(document).ready(function() {
-      $("#execute").on("click", function(event) {
+      $("#postMessage").on("click", function(event) {
         var name = $("#inputFn").val().replace(/ /g, "");
         let postdata = $("#textareaId").val().replace(/ /g, "");
         // alert('1')
         var name = $('#inputFn').val().replace(/ /g, '');
             WebviewInterface.execute(name, postdata.indexOf('}') > -1 ? JSON.parse(postdata) : postdata).then(function (res) {
+                console.log('-------------------------');
+                console.log(res);
+                console.log('-------------------------');
+            });  
+      });
+      $("#taskDispatch").on("click", function(event) {
+        WebviewInterface.execute("wvproxyPost", 
+        {
+            url:"http://36.110.216.29/task/dispatch",
+            param:{
+                page_id:"3",
+                step:1000,
+                use_duration:60
+            }
+        }
+        ).then(function (res) {
                 console.log('-------------------------');
                 console.log(res);
                 console.log('-------------------------');
