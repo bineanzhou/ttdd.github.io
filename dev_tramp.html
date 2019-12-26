@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>步步盈</title>
+</head>
+<body>
+
+<p>
+    参数JSON：<br/>
+    <textarea name="textareaId" id="textareaId" cols="30" rows="10" placeholder='{url:"/api/list", param:{ id:"fwoefjwief" } }'>{"url":"/api/list", "body":{ "id":"fwoefjwief" }}</textarea>
+</p>
+<p>
+    客户端方法名：<br/>
+    <input type="text" id="inputFn" placeholder="wvproxyHttp" value="wvproxyHttp">
+</p>
+<br/>
+<button id="execute">execute</button>
+</body>
+<script type="text/javascript" src="https://s4.ssl.qhres.com/!2656994b/zepto.v11.js"></script>
+<!--<script type="text/javascript" src="/dist/ms.jssdk.min-1.2.6.js"></script>-->
+<script type="text/javascript" src="https://s0.ssl.qhres.com/static/419a272c1e83b722.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#execute').on('click', function (event) {
+            window.qtramp = {};
+            window.qtramp.execute = function (name, params, fnName) {
+                window[fnName](0, '', {
+                    qtrampExecute: '回调数据',
+                    params: params
+                });
+            };
+
+            var name = $('#inputFn').val().replace(/ /g, '');
+            let postdata = $('#textareaId').val().replace(/ /g, '');
+            WebviewInterface.execute(name, postdata.indexOf('}') > -1 ? JSON.parse(postdata) : postdata).then(function (res) {
+                console.log('-------------------------');
+                console.log(res);
+                console.log('-------------------------');
+            });
+        })
+    });
+</script>
+</html>
