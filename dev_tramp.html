@@ -58,14 +58,29 @@
         <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" class="content" />
         <br />
         <button id="execute" class="button">execute</button>
-        <button onclick="testAlert()" class="button">测试</button>
+        <button onclick="testPostMsg()" class="button">测试</button>
         <br>
         <hr align="center" width="90%">
   </body>
   <script
     type="text/javascript"
     src="https://s4.ssl.qhres.com/!2656994b/zepto.v11.js"
-  ></script>
+  >
+        var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        function testPostMsg() {
+            console.log(isiOS)
+            var actionData = {cmd:'getBaseInfo'};
+            if (isiOS) {
+                try {
+                    window.webkit.messageHandlers.Qtramp.postMessage(actionData);
+                } catch (error) {
+                    console.error('ios context not exist ');
+                }
+            } else {
+                window.Qtramp.postMessage("JS调用了Flutter");
+            }
+        }
+  </script>
   <!--<script type="text/javascript" src="/dist/ms.jssdk.min-1.2.6.js"></script>-->
   <script
     type="text/javascript"
@@ -80,7 +95,7 @@
         let postdata = $("#textareaId")
           .val()
           .replace(/ /g, "");
-        window.Qtramp.postMessage("JS调用了Flutter");
+        
         window.Qtramp.postMessage(
           name,
           postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
