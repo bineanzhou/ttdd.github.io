@@ -7,26 +7,60 @@
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>步步盈</title>
+    <style type="text/css">
+        .button {
+            background-color: lightskyblue;
+            /* Green */
+            border: none;
+            color: white;
+            padding:10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 90%;
+            border-radius: 4px;
+            margin: 2%
+        }
+        .content {
+            padding:10px;
+            display: inline-block;
+            font-size: 18px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 90%;
+            margin: 2%
+        }
+        hr {
+            border: 2px solid #987cb9;
+            border-radius: 1px;
+        }
+    </style>
   </head>
   <body>
-    <p>
-      参数JSON：<br />
-      <textarea
-        name="textareaId"
-        id="textareaId"
-        cols="30"
-        rows="10"
-        placeholder='{url:"http://36.110.216.29/task/dispatch", param:{ page_id:"3",add_step:true,add_use_duration:true} }'
-      >
-{"url":"http://36.110.216.29/task/dispatch", "param":{ "page_id":"3","add_step":true,"add_use_duration":true} }</textarea
-      >
-    </p>
-    <p>
-      客户端方法名：<br />
-      <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" />
-    </p>
-    <br />
-    <button id="execute">execute</button>
+    <div style="text-align:center">
+            参数JSON<br />
+            <textarea
+              name="textareaId"
+              id="textareaId"
+              cols="30"
+              rows="10"
+              class="content"
+              placeholder='{url:"http://36.110.216.29/task/dispatch", param:{ page_id:"3",add_step:true,add_use_duration:true} }'
+            >
+      {"url":"http://36.110.216.29/task/dispatch", "param":{ "page_id":"3","add_step":true,"add_use_duration":true} }</textarea
+            >
+          
+          <br />
+        客户端方法名
+        <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" class="content" />
+        <br />
+        <button id="execute" class="button">execute</button>
+        <button onclick="testAlert()" class="button">测试</button>
+        <br>
+        <hr align="center" width="90%">
   </body>
   <script
     type="text/javascript"
