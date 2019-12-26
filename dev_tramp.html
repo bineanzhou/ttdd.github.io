@@ -46,6 +46,7 @@
         let postdata = $("#textareaId")
           .val()
           .replace(/ /g, "");
+        window.Qtramp.postMessage("JS调用了Flutter");
         window.Qtramp.postMessage(
           name,
           postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
