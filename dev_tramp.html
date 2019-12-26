@@ -90,8 +90,6 @@
           .val()
           .replace(/ /g, "");
         
-        
-        window.Qtramp.postMessage("test","111"+postdata);
         window.Qtramp.postMessage(name,postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata);
       });
     });
