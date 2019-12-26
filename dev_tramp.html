@@ -90,7 +90,13 @@
           .val()
           .replace(/ /g, "");
         
-        window.Qtramp.postMessage(name,postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata);
+        window.Qtramp.postMessage(name,JSON.stringify({
+            a:{b:1},
+            data:{
+                k:'fhowejfjwoej'
+            }
+        }
+        ));
       });
     });
   </script>
