@@ -39,29 +39,6 @@
         }
     </style>
   </head>
-  <body>
-    <div style="text-align:center">
-            参数JSON<br />
-            <textarea
-              name="textareaId"
-              id="textareaId"
-              cols="30"
-              rows="10"
-              class="content"
-              placeholder='{url:"http://36.110.216.29/task/dispatch", param:{ page_id:"3",add_step:true,add_use_duration:true} }'
-            >
-      {"url":"http://36.110.216.29/task/dispatch", "param":{ "page_id":"3","add_step":true,"add_use_duration":true} }</textarea
-            >
-          
-          <br />
-        客户端方法名
-        <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" class="content" />
-        <br />
-        <button id="execute" class="button">execute</button>
-        <button onclick="testPostMsg()" class="button">测试</button>
-        <br>
-        <hr align="center" width="90%">
-  </body>
   <script
     type="text/javascript"
     src="https://s4.ssl.qhres.com/!2656994b/zepto.v11.js"
@@ -107,4 +84,28 @@
       });
     });
   </script>
+  <body>
+    <div style="text-align:center">
+            参数JSON<br />
+            <textarea
+              name="textareaId"
+              id="textareaId"
+              cols="30"
+              rows="10"
+              class="content"
+              placeholder='{url:"http://36.110.216.29/task/dispatch", param:{ page_id:"3",add_step:true,add_use_duration:true} }'
+            >
+      {"url":"http://36.110.216.29/task/dispatch", "param":{ "page_id":"3","add_step":true,"add_use_duration":true} }</textarea
+            >
+          
+          <br />
+        客户端方法名
+        <input type="text" id="inputFn" placeholder="qHttp" value="qHttp" class="content" />
+        <br />
+        <button id="execute" class="button">execute</button>
+        <button onclick="testPostMsg()" class="button">测试</button>
+        <br>
+        <hr align="center" width="90%">
+  </body>
+  
 </html>
