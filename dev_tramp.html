@@ -89,14 +89,11 @@
           .val()
           .replace(/ /g, "");
         
+        console.log("-------------------------");
         window.Qtramp.postMessage(
           name,
           postdata.indexOf("}") > -1 ? JSON.parse(postdata) : postdata
-        ).then(function(res) {
-          console.log("-------------------------");
-          console.log(res);
-          console.log("-------------------------");
-        });
+        );
       });
     });
   </script>
