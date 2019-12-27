@@ -5,7 +5,7 @@ https://bineanzhou.github.io
 ## risapp
 [dev_risapp.html](https://bineanzhou.github.io/dev.github.io/dev_risapp.html)
 ## tramp
-[dev_risapp.html](https://bineanzhou.github.io/dev.github.io/dev_tramp.html)
+[dev_tramp.html](https://bineanzhou.github.io/dev.github.io/dev_tramp.html)
 
 # mock data
 ## tramp
