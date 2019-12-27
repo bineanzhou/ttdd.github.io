@@ -53,6 +53,9 @@
                 window.Qtramp.postMessage("test","JS调用了Flutter","123");
             }
         }
+        function showAlert() {
+            alert(navigator.userAgent)
+        }
   </script>
   </head>
 
@@ -74,6 +77,7 @@
         客户端方法名
         <input type="text" id="inputFn" placeholder="wvproxyHttpPost" value="wvproxyHttpPost" class="content" />
         <br />
+        <button onclick="showAlert()" class="button">显示UA</button>
         <button id="postMessage" class="button">postMessage</button>
         <button id="taskDispatch" class="button">运动赚</button>
         <br>
@@ -106,7 +110,6 @@
             }
         }
         ).then(function (res) {
-              alert(res);
               console.log('-------------------------');
               console.log(res);
               console.log('-------------------------');
