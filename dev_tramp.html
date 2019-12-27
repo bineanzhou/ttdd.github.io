@@ -72,7 +72,7 @@
           
           <br />
         客户端方法名
-        <input type="text" id="inputFn" placeholder="wvproxyPost" value="wvproxyPost" class="content" />
+        <input type="text" id="inputFn" placeholder="wvproxyHttpPost" value="wvproxyHttpPost" class="content" />
         <br />
         <button id="postMessage" class="button">postMessage</button>
         <button id="taskDispatch" class="button">运动赚</button>
@@ -96,7 +96,7 @@
             });  
       });
       $("#taskDispatch").on("click", function(event) {
-        WebviewInterface.execute("wvproxyPost", 
+        WebviewInterface.execute("wvproxyHttpPost", 
         {
             url:"http://36.110.216.29/task/dispatch",
             param:{
