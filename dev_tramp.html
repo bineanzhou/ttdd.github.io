@@ -50,7 +50,7 @@
                     console.error('ios context not exist ');
                 }
             } else {
-                window.Qtramp.postMessage("test","JS调用了Flutter","123");
+                window.Qtramp.postMessage("test",JSON.stringify({data:"js 调用 flutter"}),"callback");
             }
         }
         function showAlert() {
@@ -97,6 +97,7 @@
                 console.log('-------------------------');
                 console.log(res);
                 console.log('-------------------------');
+                alert(res);
             });  
       });
       $("#taskDispatch").on("click", function(event) {
@@ -113,6 +114,7 @@
               console.log('-------------------------');
               console.log(res);
               console.log('-------------------------');
+              alert(res);
             });  
       });
     });
