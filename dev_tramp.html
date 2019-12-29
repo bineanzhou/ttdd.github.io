@@ -66,7 +66,7 @@
               name="textareaId"
               id="textareaId"
               cols="30"
-              rows="10"
+              rows="5"
               class="content"
               placeholder='{url:"http://36.110.216.29/task/dispatch", param:{ page_id:"3",__step:true,__use_duration:true} }'
             >
@@ -77,10 +77,12 @@
         客户端方法名
         <input type="text" id="inputFn" placeholder="wvproxyHttpPost" value="wvproxyHttpPost" class="content" />
         <br />
+        <hr align="center" width="90%">
         <button onclick="showAlert()" class="button">显示UA</button>
-        <button id="postMessage" class="button">postMessage</button>
-        <button id="taskDispatch" class="button">运动赚</button>
-        <br>
+        <button id="postMessage" class="button">HttpPost测试</button>
+        <button id="taskDispatch" class="button">运动赚任务列表</button>
+        <hr align="center" width="90%">
+        <button id="login" class="button">登录</button>
         <hr align="center" width="90%">
   </body>
   <script type="text/javascript" src="https://s4.ssl.qhres.com/!2656994b/zepto.v11.js"></script>
@@ -110,6 +112,16 @@
                 __use_duration:true
             }
         }
+        ).then(function (res) {
+              console.log('-------------------------');
+              console.log(JSON.stringify(res));
+              console.log('-------------------------');
+              alert(JSON.stringify(res));
+            });  
+      });
+      $("#login").on("click", function(event) {
+        WebviewInterface.execute("qlogin", 
+        {}
         ).then(function (res) {
               console.log('-------------------------');
               console.log(JSON.stringify(res));
