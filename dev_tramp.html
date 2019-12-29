@@ -95,9 +95,9 @@
         var name = $('#inputFn').val().replace(/ /g, '');
             WebviewInterface.execute(name, postdata.indexOf('}') > -1 ? JSON.parse(postdata) : postdata).then(function (res) {
                 console.log('-------------------------');
-                console.log(res);
+                console.log(JSON.stringify(res));
                 console.log('-------------------------');
-                alert(res);
+                alert(JSON.stringify(res));
             });  
       });
       $("#taskDispatch").on("click", function(event) {
@@ -112,9 +112,9 @@
         }
         ).then(function (res) {
               console.log('-------------------------');
-              console.log(res);
+              console.log(JSON.stringify(res));
               console.log('-------------------------');
-              alert(res);
+              alert(JSON.stringify(res));
             });  
       });
     });
