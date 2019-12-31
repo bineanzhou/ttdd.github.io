@@ -82,6 +82,7 @@
         <button onclick="showAlert()" class="button">显示UA</button>
         <button id="taskDispatch" class="button">运动赚任务列表</button>
         <hr align="center" width="90%">
+        <button id="islogin" class="button">判断是否登录</button>
         <button id="login" class="button">登录</button>
         <hr align="center" width="90%">
   </body>
@@ -121,6 +122,14 @@
       });
       $("#login").on("click", function(event) {
         WebviewInterface.execute("login", {}).then(function (res) {
+              console.log('-------------------------');
+              console.log(JSON.stringify(res));
+              console.log('-------------------------');
+              alert(JSON.stringify(res));
+            });  
+      });
+      $("#islogin").on("click", function(event) {
+        WebviewInterface.execute("isLogin", {}).then(function (res) {
               console.log('-------------------------');
               console.log(JSON.stringify(res));
               console.log('-------------------------');
