@@ -120,9 +120,7 @@
             });  
       });
       $("#login").on("click", function(event) {
-        WebviewInterface.execute("qlogin", 
-        {}
-        ).then(function (res) {
+        WebviewInterface.execute("login", {}).then(function (res) {
               console.log('-------------------------');
               console.log(JSON.stringify(res));
               console.log('-------------------------');
