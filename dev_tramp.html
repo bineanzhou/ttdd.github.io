@@ -45,7 +45,7 @@
             var actionData = {cmd:'getBaseInfo'};
             if (isiOS) {
                 try {
-                    window.webkit.messageHandlers.Qtramp.postMessage(actionData);
+                    window.webkit.messageHandlers.Qtramp.postMessage("test",JSON.stringify({data:"js 调用 flutter"}),"callback");
                 } catch (error) {
                     console.error('ios context not exist ');
                 }
