@@ -1,6 +1,6 @@
 {
-  "errno": 0,
-  "errmsg": "ok",
+  "error_no": 0,
+  "error_msg": "ok",
   "data": {
     "id": "123456",
     "name": "qtramp@163.com",
