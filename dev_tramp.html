@@ -83,6 +83,7 @@
         <button id="taskDispatch" class="button">运动赚任务列表</button>
         <hr align="center" width="90%">
         <button id="setTitle" class="button">设置标题</button>
+        <button id="setMenu" class="button">设置菜单</button>
         <button id="islogin" class="button">判断是否登录</button>
         <button id="login" class="button">登录</button>
         <hr align="center" width="90%">
@@ -142,6 +143,30 @@
       });
       $("#setTitle").on("click", function(event) {
         WebviewInterface.execute("setTitle", {title:"步步盈标题测试"}).then(function (res) {
+              console.log('-------------------------');
+              console.log(JSON.stringify(res));
+              console.log('-------------------------');
+              alert(JSON.stringify(res));
+            });  
+      });
+      $("#setMenu").on("click", function(event) {
+        WebviewInterface.execute("setTitle", {
+          name: "菜单",
+          list: [
+          {
+            type: "web",
+            name: "",
+            icon: "http://xxxx",
+            url: "https://github.com/"
+          },
+          {
+            type: "click",
+            name: "刷新",
+            icon: "",
+            key: "refresh"
+          }
+        ]
+        }).then(function (res) {
               console.log('-------------------------');
               console.log(JSON.stringify(res));
               console.log('-------------------------');
