@@ -1,5 +1,13 @@
 # dev.github.io
 https://bineanzhou.github.io
+
+
+## chromium test
+[nav_123.html](https://bineanzhou.github.io/dev.github.io/nav_123.html)
+## chromium test
+[mse_test.html](https://bineanzhou.github.io/dev.github.io/mse_test.html)
+
+[chromium_test.html](https://bineanzhou.github.io/dev.github.io/chromium_test.html)
 ## ttdd
 [dev_ttdd.html](https://bineanzhou.github.io/dev.github.io/dev_ttdd.html)
 ## risapp

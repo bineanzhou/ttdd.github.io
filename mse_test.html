@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>浏览器JS测试页面</title>
+    <link rel="stylesheet" href="./data/css/style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        display: block;
+        text-decoration: none;
+        color: #000;
+        background-color: #f2f2f2;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+      }
+
+      li a {
+        color: inherit;
+        text-decoration: none;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      li:hover {
+        background-color: #ddd;
+      }
+    </style>
+
+    <style>
+      #consoleOutput {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        margin: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul>
+      <div
+        id="uaInfo"
+        style="margin: 5px; padding: 10px; border: 1px solid gray"
+      ></div>
+      <li id="openCrxManagerPage">本地扩展管理页面</li>
+      <li id="isSettingsEnabled">扩展功能开关</li>
+      <li id="installExtension">安装扩展</li>
+      <li id="getExtensionIcon">获取扩展ICON</li>
+
+      <li id="getInstalledItems">获取已安装扩展</li>
+      <li>
+        <a href="chrome-error://chromewebdata/" target="_blank"
+          >chrome-error://chromewebdata/</a
+        >
+      </li>
+      <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
+      <li><a href="https://www.sina.cn" target="_blank">新浪</a></li>
+      <li>
+        <a
+          href="https://storage.pangdasc.com/pages/771427447166/landing_mt9_page.html?mediaPlatformType=9&source_id={source_id}&advertiserId=1264047&planid={planid}&keywordid={keywordid}&creativeid={creativeid}&groupid={groupid}&device={device}&t=1711608465876"
+          target="_blank"
+          >测试页面</a
+        >
+      </li>
+
+      <li id="showUA">点击显示UA</li>
+    </ul>
+
+    <div id="toast" class="toast">
+      <span class="message">This is a toast message!</span>
+    </div>
+
+    <h2 style="margin: 5px">Console Output:</h2>
+    <div id="consoleOutput"></div>
+    <script>
+      function showToast(message, duration = 3000) {
+        const toast = document.getElementById("toast");
+        toast.querySelector(".message").textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, duration);
+      }
+
+      // 创建事件处理函数
+      function showUserAgent() {
+        // 获取用户代理信息
+        const userAgent = navigator.userAgent;
+        // 显示用户代理信息
+        alert("User Agent: " + userAgent);
+      }
+      document.getElementById("uaInfo").innerHTML =
+        "UA：" + navigator.userAgent;
+      document.getElementById("showUA").addEventListener("click", function () {
+        showUserAgent();
+      });
+
+      // 保存原始 console.log 方法
+      const originalConsoleLog = console.log;
+
+      // 获取显示区域的引用
+      const outputElement = document.getElementById("consoleOutput");
+
+      // 自定义 console.log 方法
+      console.log = function (...args) {
+        // 将消息格式化为字符串
+        const message = args
+          .map((arg) => (typeof arg === "object" ? JSON.stringify(arg) : arg))
+          .join(" ");
+
+        // 在网页上显示日志
+        const timestamp = new Date().toLocaleString();
+        outputElement.innerHTML += `[${timestamp}] ${message}<br>`;
+
+        // 也输出到控制台
+        originalConsoleLog.apply(console, args);
+      };
+
+      function getDownlodUrl(id) {
+        return `https://edge.microsoft.com/extensionwebstorebase/v1/crx?response=redirect&os=android&arch=arm64&os_arch=aarch64&nacl_arch=arm&prod=chromiumcrx&prodchannel=&prodversion=126.0.2592.86&lang=zh-CN&acceptformat=crx3,puff&x=id%3D${id}%26installsource%3Dinline%26uc`;
+      }
+      
+      function delay(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+}
+
+      async function installExtension() {
+        var reqID = randomString(8);
+
+        // 显示确认对话框
+        var result = confirm("是否安装扩展?");
+        if (!result) {
+          return false;
+        }
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:installExtension",
+          { id: window.EXT_ID, url: getDownlodUrl(window.EXT_ID) },
+          {
+            requestID: reqID,
+          }
+        );
+
+        if (!isAndroid()) {
+          mockClientMessage("installExtension", {
+            requestID: reqID,
+            common: {},
+          });
+          
+          A3OnExtMessage(
+            `notifyInstallState`,
+            `${JSON.stringify({
+              requestID: reqID,
+              data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 1 },
+            })}`
+          );
+          
+          await delay(1000); // 等待 1 秒
+
+          A3OnExtMessage(
+            `notifyInstallState`,
+            `${JSON.stringify({
+              requestID: reqID,
+              data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 2 },
+            })}`
+          );
+          
+          await delay(1000); // 等待 1 秒
+
+          A3OnExtMessage(
+              `notifyInstallState`,
+              `${JSON.stringify({
+                requestID: reqID,
+                data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 3 },
+              })}`
+            );
+        }
+      }
+
+      function openCrxManagerPage() {
+        //发送请求给客户端
+        var reqID = randomString(8);
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:openCrxManagerPage",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        mockClientMessage("openCrxManagerPage", {
+          requestID: reqID,
+          common: {},
+        });
+      }
+
+      function isSettingsEnabled() {
+        //发送请求给客户端
+        var reqID = randomString(8);
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:isSettingsEnabled",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        mockClientMessage("isSettingsEnabled", {
+          requestID: reqID,
+          common: {},
+        });
+      }
+      function getInstalledItems() {
+        var reqID = randomString(8);
+        //发送请求给客户端
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:getInstalledItems",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        //模拟客户端收到消息调用前端方法回传列表
+        mockClientMessage("getInstalledItems", {
+          requestID: reqID,
+          common: {},
+          data: [
+            {
+              name: "DarkMode",
+              version: "1.0.0",
+            },
+          ],
+        });
+      }
+
+      function isAndroid() {
+        return /Android/i.test(navigator.userAgent);
+      }
+      function mockClientMessage(type, clientData) {
+        var enable = !isAndroid();
+        if (enable) {
+          const clientDataJson = JSON.stringify(clientData);
+          //客户端直接执行window上方法
+          console.log(`非Android mock client:`, clientDataJson);
+          A3OnExtMessage(type, clientDataJson);
+        }
+      }
+
+      function randomString(len) {
+        len = len || 32;
+        var $chars =
+          "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        var maxPos = $chars.length;
+        var pwd = "";
+        for (let i = 0; i < len; i++) {
+          pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return pwd;
+      }
+      function A3MessageSend() {
+        let EventCallbacks = {};
+        let msgObj = {
+          send: function (type, data, clientData) {
+            const requestID = clientData?.requestID || randomString(8);
+            const resp = {
+              errCode: 0,
+              errMessage: "ok",
+              data: data,
+              requestID,
+            };
+            const content = `${type}:${JSON.stringify(resp)}`;
+            console.log(`前端发送请求:`);
+            console.log(content);
+            try {
+              window.webkit.messageHandlers.ai_ext_message.postMessage(content);
+            } catch (error) {}
+          },
+          on: function (type, func) {
+            if (!EventCallbacks[type]) {
+              EventCallbacks[type] = [];
+            }
+            EventCallbacks[type].push(func);
+          },
+          onMessage: function (type, data, ...args) {
+            console.log(`客户端回传请求：${type}---`, data);
+            if (type && EventCallbacks[type]) {
+              let ret = false,
+                cbs = EventCallbacks[type];
+              cbs.forEach(function (cb, idx) {
+                let parseData = "";
+                try {
+                  parseData = JSON.parse(data);
+                } catch (error) {
+                  parseData = data;
+                }
+                ret = cb.apply(null, [parseData, ...args]) || ret;
+              });
+              console.log(`ret:${ret}`);
+              return ret;
+            }
+            return false;
+          },
+        };
+        return msgObj;
+      }
+
+      function extEvent() {
+        //客户端扩展列表数据
+        window.A3ExtMessage.on("isSettingsEnabled", (clientData) => {
+          console.log(`前端收到客户端 isSettingsEnabled：`, clientData);
+          return true;
+        });
+        window.A3ExtMessage.on("getInstalledItems", (clientData) => {
+          console.log(`前端收到客户端 getInstalledItems：`, clientData);
+          return true;
+        });
+
+        window.A3ExtMessage.on("installExtension", (clientData) => {
+          console.log(`前端收到客户端 installExtension`, clientData);
+          return true;
+        });
+        window.A3ExtMessage.on("notifyInstallState", (clientData) => {
+          console.log(`前端收到客户端 notifyInstallState`, clientData);
+          if (clientData.data.state == 1) {
+            showToast(`${clientData.data.id} 开始安装`);
+          } else if (clientData.data.state == 2) {
+            showToast(`${clientData.data.id} 安装中...`);
+          } else if (clientData.data.state == 3) {
+            showToast(`${clientData.data.id} 扩展安装成功!`);
+          }
+          return true;
+        });
+      }
+      function init() {
+        if (window._A3_EXTENSION_WEBQUERY_INIT) return;
+        window._A3_EXTENSION_WEBQUERY_INIT = true;
+        window.EXT_ID = "ifoakfbpdcdoeenechcleahebpibofpc";
+        console.log("ext init");
+        if (!window.A3ExtMessage) {
+          let A3ExtMessage = A3MessageSend();
+          window.A3ExtMessage = A3ExtMessage;
+          window.A3OnExtMessage = A3ExtMessage.onMessage;
+        }
+
+        document
+          .getElementById("getInstalledItems")
+          .addEventListener("click", getInstalledItems);
+        document
+          .getElementById("isSettingsEnabled")
+          .addEventListener("click", isSettingsEnabled);
+        document
+          .getElementById("installExtension")
+          .addEventListener("click", installExtension);
+
+        document
+          .getElementById("openCrxManagerPage")
+          .addEventListener("click", openCrxManagerPage);
+
+        extEvent();
+      }
+
+      init();
+    </script>
+  </body>
+</html>
