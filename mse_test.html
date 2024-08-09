@@ -57,12 +57,70 @@
         id="uaInfo"
         style="margin: 5px; padding: 10px; border: 1px solid gray"
       ></div>
-      <li id="openCrxManagerPage">本地扩展管理页面</li>
-      <li id="isSettingsEnabled">扩展功能开关</li>
-      <li id="installExtension">安装扩展</li>
-      <li id="getExtensionIcon">获取扩展ICON</li>
+      <img id="imageIcon" />
+      <li id="closePage">closePage(关闭页面)</li>
+      <li id="onBackPressed">onBackPressed(返回)</li>
+      <hr />
+      <li id="openCrxManagerPage">openCrxManagerPage(本地扩展管理页面)</li>
+      <li id="isSettingsEnabled">isSettingsEnabled(扩展功能开关)</li>
+      <hr />
 
-      <li id="getInstalledItems">获取已安装扩展</li>
+      <!-- 添加一个分割线 -->
+      <li
+        class="InstallExtension"
+        ext-id="eimadpbcbfnmbkopoojfekhnkhdbieeh"
+        ext-name="dark-reader_4.9.88"
+      >
+        installExtension(dark-reader_4.9.88)
+      </li>
+      <li
+        class="InstallExtension"
+        ext-id="jpbjcnkcffbooppibceonlgknpkniiff"
+        ext-name="Global-Speed-3.0.9971"
+      >
+        installExtension(Global-Speed-3.0.9971)
+      </li>
+      <li
+        class="InstallExtension"
+        ext-id="lobgmjplponpghhahhmpfhnaiegjipaf"
+        ext-name="Easy-QR-Code-1.0.7"
+      >
+        installExtension(Easy-QR-Code-1.0.7)
+      </li>
+      <li
+        class="InstallExtension"
+        ext-id="hlkenndednhfkekhgcdicdfddnkalmdm"
+        ext-name="Cookie-Editor-1.13.0"
+      >
+        installExtension(Cookie_Editor_1.13.0)
+      </li>
+      <li
+        class="InstallExtension"
+        ext-id="edibdbjcniadpccecjdfdjjppcpchdlm"
+        ext-name="i-still-dont-care-about-cookie-1.1.4"
+      >
+        installExtension(i-still-dont-care-about-cookie-1.1.4)
+      </li>
+      <li
+        class="InstallExtension"
+        ext-id="gcckmgpflcgmojmpblplppomkmcdjlan"
+        ext-name="找券券_3.3.3"
+      >
+        installExtension(找券券_3.3.3)
+      </li>
+     
+
+      <hr />
+      <!-- 添加一个分割线 -->
+
+      <li id="getInstallState">getInstallState(获取扩展安装状态)</li>
+      <li id="getExtensionIcon">getExtensionIcon(获取扩展ICON)</li>
+      <li id="getInstalledItems">getInstalledItems(获取已安装扩展列表)</li>
+      <li id="removeExtension">removeExtension(删除扩展)</li>
+      <li id="changeExtensionState">changeExtensionState(禁用启用扩展)</li>
+      <li id="isExtensionEnabled">isExtensionEnabled(扩展是否可用)</li>
+      <hr />
+      <!-- 添加一个分割线 -->
       <li>
         <a href="chrome-error://chromewebdata/" target="_blank"
           >chrome-error://chromewebdata/</a
@@ -84,7 +142,8 @@
     <div id="toast" class="toast">
       <span class="message">This is a toast message!</span>
     </div>
-
+    <hr />
+    <!-- 添加一个分割线 -->
     <h2 style="margin: 5px">Console Output:</h2>
     <div id="consoleOutput"></div>
     <script>
@@ -132,28 +191,48 @@
         originalConsoleLog.apply(console, args);
       };
 
-      function getDownlodUrl(id) {
-        return `https://edge.microsoft.com/extensionwebstorebase/v1/crx?response=redirect&os=android&arch=arm64&os_arch=aarch64&nacl_arch=arm&prod=chromiumcrx&prodchannel=&prodversion=126.0.2592.86&lang=zh-CN&acceptformat=crx3,puff&x=id%3D${id}%26installsource%3Dinline%26uc`;
+      function getDownlodUrl(name) {
+        return `https://bineanzhou.github.io/dev.github.io/data/crx/${name}.crx`;
       }
-      
-      function delay(ms) {
-    return new Promise(resolve => {
-        setTimeout(resolve, ms);
-    });
-}
 
+      function delay(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+
+      function closePage() {
+        var reqID = randomString(8);
+        A3ExtMessage.send(
+          "$a3com_message_cmd:closePage",
+          {},
+          {
+            requestID: reqID,
+          }
+        );
+      }
+      function onBackPressed() {
+        var reqID = randomString(8);
+        A3ExtMessage.send(
+          "$a3com_message_cmd:onBackPressed",
+          {},
+          {
+            requestID: reqID,
+          }
+        );
+      }
       async function installExtension() {
         var reqID = randomString(8);
 
         // 显示确认对话框
-        var result = confirm("是否安装扩展?");
+        var result = confirm(`是否安装扩展 ${window.EXT_ID}?`);
         if (!result) {
           return false;
         }
 
         A3ExtMessage.send(
           "$a3ext_message_cmd:installExtension",
-          { id: window.EXT_ID, url: getDownlodUrl(window.EXT_ID) },
+          { id: window.EXT_ID, url: getDownlodUrl(window.EXT_NAME) },
           {
             requestID: reqID,
           }
@@ -164,35 +243,146 @@
             requestID: reqID,
             common: {},
           });
-          
+
           A3OnExtMessage(
             `notifyInstallState`,
             `${JSON.stringify({
               requestID: reqID,
-              data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 1 },
+              data: { id: window.EXT_ID, state: 1 },
             })}`
           );
-          
+
           await delay(1000); // 等待 1 秒
 
           A3OnExtMessage(
             `notifyInstallState`,
             `${JSON.stringify({
               requestID: reqID,
-              data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 2 },
+              data: { id: window.EXT_ID, state: 2 },
             })}`
           );
-          
+
           await delay(1000); // 等待 1 秒
 
           A3OnExtMessage(
-              `notifyInstallState`,
-              `${JSON.stringify({
-                requestID: reqID,
-                data: { id: "ifoakfbpdcdoeenechcleahebpibofpc", state: 3 },
-              })}`
-            );
+            `notifyInstallState`,
+            `${JSON.stringify({
+              requestID: reqID,
+              data: { id: window.EXT_ID, state: 3 },
+            })}`
+          );
         }
+      }
+
+      function changeExtensionState() {
+        var reqID = randomString(8);
+
+        var enable = Math.random() >= 0.5;
+        var stateName = "";
+        if (enable) {
+          stateName = "启用";
+        } else {
+          stateName = "禁用";
+        }
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:changeExtensionState",
+          { id: window.EXT_ID, state: enable ? "ENABLED" : "DISABLED" },
+          {
+            requestID: reqID,
+          }
+        );
+
+        var result = Math.random() >= 0.5;
+        mockClientMessage("changeExtensionState", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: result ? `${stateName}成功！` : `${stateName}失败!`,
+          data: enable,
+        });
+      }
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      async function isExtensionEnabled() {
+        var reqID = randomString(8);
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:isExtensionEnabled",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        var result = Math.random() >= 0.5;
+
+        mockClientMessage("isExtensionEnabled", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: "ok",
+          data: result,
+        });
+      }
+
+      async function getInstallState() {
+        var reqID = randomString(8);
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:getInstallState",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        // STATE_IDLE(0),
+        // STATE_INSTALL_START(1),
+        // STATE_INSTALLING(2),
+        // STATE_INSTALLED(3);
+        var state = getRandomInt(0, 3);
+
+        mockClientMessage("getInstallState", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: "ok",
+          data: { state: state },
+        });
+      }
+
+      async function removeExtension() {
+        var reqID = randomString(8);
+
+        // 显示确认对话框
+        var result = confirm(`是否卸载扩展 ${window.EXT_ID}?`);
+        if (!result) {
+          return false;
+        }
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:removeExtension",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        var result = Math.random() >= 0.5;
+
+        mockClientMessage("removeExtension", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: result ? "删除成功！" : "删除失败!",
+          data: result,
+        });
       }
 
       function openCrxManagerPage() {
@@ -212,6 +402,25 @@
         });
       }
 
+      function getExtensionIcon() {
+        //发送请求给客户端
+        var reqID = randomString(8);
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:getExtensionIcon",
+          { id: window.EXT_ID },
+          {
+            requestID: reqID,
+          }
+        );
+
+        mockClientMessage("getExtensionIcon", {
+          requestID: reqID,
+          errCode: 0,
+          errMessage: "ok",
+          data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAADINJREFUaIHtmX90lNWZxz/3fd+ZyZuZSTLJkJ8kIElIIkYg0lChCHo4CKuwVLf1yJ7q0V23uxYQ+sNqFcsKIv5YDkJrrbV6jts92tMqKhaVri4gtkIhBEEgJJEA+U3Ij5nJTGbmfd+7f0xmwo8kJELbs2f7/DX33uc+z/f7vM9zc58b+Jv8dUVcSWPXfv/7TpvhKjGlVSgsa4IQig5W1BKiS1iiSyh0CmF8tn/jupYr5fOyCUxe9kiloigLheQWCVNHuO2gEGK7kOY7+zc9sfty/H9pAlOWrpopBD9HMOlyAEjYgyLXV29c+3ZsODoZNYGpS1fnopibgNvPnQ+1NBLuaMeKRnAXliBsdrRk5yiAyMMW3Fa9aW3taPCMisDUZY/ORYhfA+kARrCX4KkT+OtrsKIRUkqvIbW0fDQmLxSfRN5ZvWnttpFuGDGBiuWPrZbIH8fH/voaug9VAaAlO/FOn4Ut1TN6yIOIFHyn+rk1z49Ed0QEpi5/dBWIxwGsaISOPR8T7mgHQLHZyLpxwajSZUTABN+qem7Nry6pdymFigceu0NK+Tr94Nt3f0S0pyuxnn3j/CsW+QvEFMhbqzatfX84pWEJTFn+aLFAHGcI8GnlFbgLS64c5IslgDQmHNj85JmhFJThdgsh1sd/dx+qOg+8w5v55wYP4JJCWzucwpAErluxugLJbQDhjnZ6T504b/0vAB5iKXLf1GWrrx5qfUgClmkmTpyu/tMmLlqyEz1n7JVDObwIhLlyqMVBCVy/cqWOYD790T83dQCSC6668jCHl8VD1as22GTYdC0E7HYkWssJitwONGVgvysrgwgGPlTMy7xOqUhSMHFhYsNKzJsIelHxoRFBeKcsXTWj+idrPhkRAbcwF3plBBcm/lAnzhQHAIoAS0Kqx0kvISwEHdhowz5qIiqSXCJ4iKIh0bHQkChILAQWEEIhgkIAlTbVditwaQItKxaPX2P6r1aEIDXSS1BXSM/Ow5OVE3OcpOOX0BcKEULBjoUHg5MkEUAdEfgUDPIJ48LEQxQdiyRdJytvoK56Ojvp7jxLFEEXNvKt8LSt3/m7cZ6fbjs5JIHmpQtLbYaZm61GxyChvLKSr3zvQfKKJl4EoubQQfbs+IiTdcfpxIaK5DRJdA3+URPiwSCfPjKIkobBuKKJTJ9zEyXlky/SbW1qZO+ODzm491M0ZIEp1MIzDyxKGvPcOzVxncR3b79/UZGiyAIpROHWgukbFtx5lys779InzcE9f2T7lt9wJhShHTtfoA/5JVyYTCBEJhHG6Hbmff0bTJ5+/SV9tDY18vbLP+u6/czhHwop66Oa+kXOxrcaEgS6VixOM0xzMoISvWJ2oXbH/T9wJOkJcoePHOW97f8NQGqKm/nz5lIwdux5Dn7x9BN0YKMTG8dIvqgmVCSlBPESJVfX+Nay73JugE41NvL+9g/p8fkAWDBvLtdcXZZYD/eFpPHr558J7tt5XAjqNFU96Nn4VneMwLJbJ0eh2O7NKXSvfGqZ4vbkARw7eoz1655k7969CUOyv+VYfNvXefhHD5GSkgLA3p0f8cGbv6EdO35UAqikYQDQjYYLEzcmmURY9I93M7nyqwD4fD6eXLeeLW9uQYhYSyP6uVdOr+Shhx+mtKwUAMvf1dT1yN1Pm0KeRvJF1uZ3D4p49CWyPPW+VbfYyyvnA9TVHOOBe+/F7/fF2g0kILCkTMS2uLSUzS+/gsvtBuDtzc/QUXcUdBe2vPGkpWfQFwrRFwoSqDtCEhYZRWX8/bIfABDw+1l67z3UHTsWMyhAyNhVVPT7c7vdPPfyyxSVxEhEDu193//SmnelFIelmbRfi0Ysr1CsVEUoiv3qitnxSD/74HdJioZISrIh+yMvBKgCDAtMKelqqOP1F1/gn78XA/TVufOx5txETvl1g+Zyy6H9KJo9Mf7lhmfobqgj3RErfIeqIKXE7M9tARAN8cKa1Tz7q9cBsBVNqkSK95BWKoSzNZtqOQ2puJKum52HqukA1R/vQHa243WoSAkZDg1vkoZDEYmmNWJZtPUZ/PHN11ny7X8l2eUmq2z4buxcYsGAn8+2b2OCy062bkNXFfoziKgl6QwbtIcNkOA/WUf1xzuYMmsOQnemJ103Oy+4b0ebTbWcmpSKSyJ19aqyREV1nqjD69BAQLHbwcQUB76ohSllrAb6PVV6VRoCYVrra5kwuWKgIA/s5XTtcWqPHkGaBsUlpeQXT2Rc5dcSOq31tczMdFLkduCLmokUArAJgdum0BiMcrAzBCKGiVlzAFCvKhvLvp3HI1K4NFNIDQmKx5seN372SDVeh8ZYp40bMp2AoNcw6TXpj5HAJiSpdpUitx3fkf3QT+DDdQ9R9cluan1hjvb0AVCW+j8UpziYPnceN6x8DADfrm0syIvVTlfExJQkIuNUFZyaoNDtwKUp1PjCRM+2JcjHsSpCapoqhWEgsbo6OuMKJVOnYdR/zsxMV+JEcNlUFGERsUAVApdNTRRzWoY3YfzTP+2npjPEMV8fJwIRIFYvhiVR9ldzQzydSiYhju8BYika6P/CdkUhWRu4Y07x6AQNSU5uXmIujlWVwlCEsAICQlZH89m4QlZhMYUuO9oF15tkTSHNruK2Keed8p6KmQD09QY42+MjaFlErIEnnqBh4TNMmpqb6OsN9O+ZkVgXgNsWs30ueABNERQ4bWQVFifmzBNHGwWEhLACStRUesEKhHa8U4dphACyps0kJ3VkTXrEm4fdmwnAod07saQkaFgEjYGbZdCwCJuxcV11rLewe7OIpmePyEdOqpOsaTP70Ruhvv07m8AKRE2lVzEM2Y1QeiykFTlStTO+yXvXSuQlbphSs5Oz9PHE+E8fvIs/amFasbyOSzzHA1GTXW+8lpjPXv4ElmYb3kc/lrhEjlTttJAWQumx2ZUOJffFrR0IKwC0hra8tEP2BTsB9IpZpK94EuFIGtSwOiaHMat+hpqR2Q/+d9RVV9ERNmjri16k3xYy6Agb1FVXcfiTXTEbGZlkrnoBxZUyqA8l2Un6ivXoFbNiZALdTaEtL+0AWjVkt2fjW90qwI+unxSSUrqtUMBJ55kGWTJ1pmazoaZn4pz3TWzjJmJ2n0VNz8Q2dgKu2/4J9z98G6HH0qy5vpb/XPMorb4gPRGLen/kokfOgGGRbtewKXCyai9lldfjTs9A6E6S596Olp0PloniTkNNzyTlm/+Ge8ly1PRYgMKhEOHfvvhC+IvPmwXilKJqNU99eqwvkSPNSxeW2iHXFKJka/70jbcuucueNYLb6OFPdvHaU4/T2tlNSyhKnS98XvqcKx67SlGKg7HJNsZ40rjzh49xzcwbBtU97+s1NfLuf70aWdi4Z4UqZY1liVOZz79Tx4V9ZpzEBiV/WxKWY8as2VTMmoMn6+Jia66v5a2fboilTV8sPU74I3SEjWHBeB0aV7nt5Og2Uu0q5V+bzc1330fuOadMXLraWvnDB7+jav8+DKn0LZenb4lAc+5Pth6L61xUpe33Lyp6UCv8zIWp660nMc60kFc0Ed3lSug01dUSCvgJGhbtfVF6o5ITgaEjPxiJAqcdt13B69BI1hR0l5u8ogESna0tdLa2oI3JIZQ9jl6pBp8y6yfHIz8kAYAblj8cyCTq5FQtZlMDLi3WoKgCTAlRKQlEYydLR59BczBK2Brd075DEeQm2/AmadgUgVtTUIQgWVMIm1bs1DJM1LzxUFBMu7QHdm1e577QzqD9nx9N+tGI9AnwhfHYtfMImFLSFTbxR81RA49L2JKcCERoDkZx21Q8DhVViIQPgK6IARkCOzpCDP7Pj2Eb2JAFvpBBW2j4vL4cCVuScNgYsnZSLLAPuhKTYd9G/y/IZROYsWgxE8qvTYx1l5sb71hCZn5BYi4zv4Ab71iC7hpI4Qnl1zJj0eLLdX+JN5BLyM133cOUOTcB8MqPH6H99CkW37+MgtIyKm9ewLP/cg8A9/z7EwBkjxvPa0+vIzO/gG+sjHVx7jQPH7z6yl+HQH7JwKtBVsE4OpqbKCgdmPNe8IewoLQMRVXJKhg3qI0vI/+/a6D+4IHE79O1NVimSe2B2HVZWhZtJxtoO9mAtGJX6doDVVimyenamkFtfBkZNIUkcp2C4tCS9PF6bv74oTZ/uns3UZSc1tOn/GHNEdBz83nvjd/S4+sZ+/m+fe16bn4E4NUN/2Gf9JVpmX/4/e8b9dx8wsAbv3jRlZ1f4N6/e3eLnps/NMAkvUEgGiys8GUx/Zv8meR/AWEEH9odb+JoAAAAAElFTkSuQmCC",
+          common: {},
+        });
+      }
       function isSettingsEnabled() {
         //发送请求给客户端
         var reqID = randomString(8);
@@ -225,6 +434,9 @@
 
         mockClientMessage("isSettingsEnabled", {
           requestID: reqID,
+          errCode: 0,
+          errMessage: "ok",
+          data: true,
           common: {},
         });
       }
@@ -243,10 +455,15 @@
         mockClientMessage("getInstalledItems", {
           requestID: reqID,
           common: {},
+          errCode: 0,
+          errMessage: "ok",
           data: [
             {
-              name: "DarkMode",
-              version: "1.0.0",
+              id: window.EXT_ID,
+              name: "Dark Reader",
+              description: "Dark Reader",
+              state: "ENABLED",
+              version: "4.9.88",
             },
           ],
         });
@@ -323,19 +540,76 @@
         return msgObj;
       }
 
+      function changeImage(imageSrc) {
+        const imgElement = document.getElementById("imageIcon");
+        imgElement.src = imageSrc;
+
+        // 设置新的图片加载完成时的处理
+        imgElement.onload = function () {
+          const originalWidth = imgElement.naturalWidth;
+          const originalHeight = imgElement.naturalHeight;
+
+          // 设置 img 元素的宽度和高度为图片的原始尺寸
+          imgElement.width = originalWidth;
+          imgElement.height = originalHeight;
+        };
+      }
+
       function extEvent() {
         //客户端扩展列表数据
         window.A3ExtMessage.on("isSettingsEnabled", (clientData) => {
           console.log(`前端收到客户端 isSettingsEnabled：`, clientData);
+          if (clientData.data) showToast(`扩展功能可用!`);
+          else showToast(`扩展功能不可用`);
           return true;
         });
         window.A3ExtMessage.on("getInstalledItems", (clientData) => {
           console.log(`前端收到客户端 getInstalledItems：`, clientData);
+          alert(JSON.stringify(clientData, null, 2));
           return true;
         });
 
         window.A3ExtMessage.on("installExtension", (clientData) => {
           console.log(`前端收到客户端 installExtension`, clientData);
+          return true;
+        });
+
+        window.A3ExtMessage.on("getExtensionIcon", (clientData) => {
+          console.log(`前端收到客户端 getExtensionIcon`, clientData);
+          if (clientData.errCode == 0) {
+            // alert(clientData.data)
+            changeImage(clientData.data);
+          } else {
+            showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+          }
+
+          return true;
+        });
+
+        window.A3ExtMessage.on("removeExtension", (clientData) => {
+          console.log(`前端收到客户端 removeExtension`, clientData);
+          showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+          return true;
+        });
+
+        window.A3ExtMessage.on("isExtensionEnabled", (clientData) => {
+          console.log(`前端收到客户端 isExtensionEnabled`, clientData);
+
+          if (clientData.errCode != 0) {
+            showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+            return true;
+          }
+          if (clientData.data == true) {
+            showToast(`${window.EXT_ID} 扩展已启用!`);
+          } else {
+            showToast(`${window.EXT_ID} 扩展已禁用!`);
+          }
+          return true;
+        });
+
+        window.A3ExtMessage.on("changeExtensionState", (clientData) => {
+          console.log(`前端收到客户端 changeExtensionState`, clientData);
+          showToast(`${window.EXT_ID} ${clientData.errMessage}`);
           return true;
         });
         window.A3ExtMessage.on("notifyInstallState", (clientData) => {
@@ -346,6 +620,8 @@
             showToast(`${clientData.data.id} 安装中...`);
           } else if (clientData.data.state == 3) {
             showToast(`${clientData.data.id} 扩展安装成功!`);
+          } else {
+            showToast(`${clientData.data.id} ${clientData.data.errMessage}!`);
           }
           return true;
         });
@@ -354,6 +630,7 @@
         if (window._A3_EXTENSION_WEBQUERY_INIT) return;
         window._A3_EXTENSION_WEBQUERY_INIT = true;
         window.EXT_ID = "ifoakfbpdcdoeenechcleahebpibofpc";
+        window.EXT_NAME = "Dark_Reader_4.9.87";
         console.log("ext init");
         if (!window.A3ExtMessage) {
           let A3ExtMessage = A3MessageSend();
@@ -364,16 +641,53 @@
         document
           .getElementById("getInstalledItems")
           .addEventListener("click", getInstalledItems);
+
         document
           .getElementById("isSettingsEnabled")
           .addEventListener("click", isSettingsEnabled);
+
+        const items = document.querySelectorAll(".InstallExtension");
+
+        items.forEach((item) => {
+          item.addEventListener("click", function () {
+            // 获取 ext-id 属性
+
+            window.EXT_ID = this.getAttribute("ext-id");
+            window.EXT_NAME = this.getAttribute("ext-name");
+            console.log("installElement", this.getAttribute("ext-id"));
+            installExtension();
+          });
+        });
+
         document
-          .getElementById("installExtension")
-          .addEventListener("click", installExtension);
+          .getElementById("closePage")
+          .addEventListener("click", closePage);
+        document
+          .getElementById("onBackPressed")
+          .addEventListener("click", onBackPressed);
+          
+        document
+          .getElementById("removeExtension")
+          .addEventListener("click", removeExtension);
 
         document
           .getElementById("openCrxManagerPage")
           .addEventListener("click", openCrxManagerPage);
+
+        document
+          .getElementById("changeExtensionState")
+          .addEventListener("click", changeExtensionState);
+
+        document
+          .getElementById("getInstallState")
+          .addEventListener("click", getInstallState);
+
+        document
+          .getElementById("isExtensionEnabled")
+          .addEventListener("click", isExtensionEnabled);
+        document
+          .getElementById("getExtensionIcon")
+          .addEventListener("click", getExtensionIcon);
 
         extEvent();
       }
