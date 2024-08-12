@@ -108,7 +108,6 @@
       >
         installExtension(找券券_3.3.3)
       </li>
-     
 
       <hr />
       <!-- 添加一个分割线 -->
@@ -445,7 +444,7 @@
         //发送请求给客户端
         A3ExtMessage.send(
           "$a3ext_message_cmd:getInstalledItems",
-          { id: window.EXT_ID },
+          {},
           {
             requestID: reqID,
           }
@@ -493,8 +492,14 @@
         }
         return pwd;
       }
+      let requestDataCache = {};
+      function cacheRequestData(requestID, requestData) {
+        requestDataCache[requestID] = requestData;
+      }
+
       function A3MessageSend() {
         let EventCallbacks = {};
+
         let msgObj = {
           send: function (type, data, clientData) {
             const requestID = clientData?.requestID || randomString(8);
@@ -504,6 +509,7 @@
               data: data,
               requestID,
             };
+            cacheRequestData(requestID, data);
             const content = `${type}:${JSON.stringify(resp)}`;
             console.log(`前端发送请求:`);
             console.log(content);
@@ -529,7 +535,15 @@
                 } catch (error) {
                   parseData = data;
                 }
-                ret = cb.apply(null, [parseData, ...args]) || ret;
+                requestID = parseData.requestID;
+                let requestData = {};                  
+                if(requestDataCache[requestID])
+                {
+                  requestData = requestDataCache[requestID];                  
+                  delete requestDataCache[requestID];
+                  console.log(`请求参数：${requestID}---`, requestData);
+                }
+                ret = cb.apply(null, [requestData, parseData, ...args]) || ret;
               });
               console.log(`ret:${ret}`);
               return ret;
@@ -557,25 +571,25 @@
 
       function extEvent() {
         //客户端扩展列表数据
-        window.A3ExtMessage.on("isSettingsEnabled", (clientData) => {
+        window.A3ExtMessage.on("isSettingsEnabled", (requestData,clientData) => {
           console.log(`前端收到客户端 isSettingsEnabled：`, clientData);
           if (clientData.data) showToast(`扩展功能可用!`);
           else showToast(`扩展功能不可用`);
           return true;
         });
-        window.A3ExtMessage.on("getInstalledItems", (clientData) => {
+        window.A3ExtMessage.on("getInstalledItems", (requestData,clientData) => {
           console.log(`前端收到客户端 getInstalledItems：`, clientData);
           alert(JSON.stringify(clientData, null, 2));
           return true;
         });
 
-        window.A3ExtMessage.on("installExtension", (clientData) => {
+        window.A3ExtMessage.on("installExtension", (requestData,clientData) => {
           console.log(`前端收到客户端 installExtension`, clientData);
           return true;
         });
 
-        window.A3ExtMessage.on("getExtensionIcon", (clientData) => {
-          console.log(`前端收到客户端 getExtensionIcon`, clientData);
+        window.A3ExtMessage.on("getExtensionIcon", (requestData, clientData) => {
+          console.log(`前端收到客户端 getExtensionIcon`,requestData, clientData);
           if (clientData.errCode == 0) {
             // alert(clientData.data)
             changeImage(clientData.data);
@@ -586,13 +600,13 @@
           return true;
         });
 
-        window.A3ExtMessage.on("removeExtension", (clientData) => {
+        window.A3ExtMessage.on("removeExtension", (requestData,clientData) => {
           console.log(`前端收到客户端 removeExtension`, clientData);
           showToast(`${window.EXT_ID} ${clientData.errMessage}`);
           return true;
         });
 
-        window.A3ExtMessage.on("isExtensionEnabled", (clientData) => {
+        window.A3ExtMessage.on("isExtensionEnabled", (requestData,clientData) => {
           console.log(`前端收到客户端 isExtensionEnabled`, clientData);
 
           if (clientData.errCode != 0) {
@@ -607,12 +621,12 @@
           return true;
         });
 
-        window.A3ExtMessage.on("changeExtensionState", (clientData) => {
+        window.A3ExtMessage.on("changeExtensionState", (requestData,clientData) => {
           console.log(`前端收到客户端 changeExtensionState`, clientData);
           showToast(`${window.EXT_ID} ${clientData.errMessage}`);
           return true;
         });
-        window.A3ExtMessage.on("notifyInstallState", (clientData) => {
+        window.A3ExtMessage.on("notifyInstallState", (requestData,clientData) => {
           console.log(`前端收到客户端 notifyInstallState`, clientData);
           if (clientData.data.state == 1) {
             showToast(`${clientData.data.id} 开始安装`);
@@ -665,7 +679,7 @@
         document
           .getElementById("onBackPressed")
           .addEventListener("click", onBackPressed);
-          
+
         document
           .getElementById("removeExtension")
           .addEventListener("click", removeExtension);
