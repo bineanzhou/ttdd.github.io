@@ -170,8 +170,29 @@
         // 显示用户代理信息
         alert("User Agent: " + userAgent);
       }
-      document.getElementById("uaInfo").innerHTML =
-        "UA：" + navigator.userAgent;
+      function applyTheme() {
+        const isDarkMode =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.getElementById("uaInfo").innerHTML = "UA：" + navigator.userAgent + " isDarkMode=" + isDarkMode;
+        
+        console.log("isDarkMode =", isDarkMode);
+        if (isDarkMode) {
+          document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
+          document.body.style.color = "#ffffff"; // Dark mode text color
+        } else {
+          document.body.style.backgroundColor = "#ffffff"; // Light mode background color
+          document.body.style.color = "#000000"; // Light mode text color
+        }
+      }
+
+      // Listen for changes in the prefers-color-scheme setting
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", applyTheme);
+        
+      // Apply the theme on initial load
+      applyTheme();
       document.getElementById("showUA").addEventListener("click", function () {
         showUserAgent();
       });
@@ -543,10 +564,9 @@
                   parseData = data;
                 }
                 requestID = parseData.requestID;
-                let requestData = {};                  
-                if(requestDataCache[requestID])
-                {
-                  requestData = requestDataCache[requestID];                  
+                let requestData = {};
+                if (requestDataCache[requestID]) {
+                  requestData = requestDataCache[requestID];
                   delete requestDataCache[requestID];
                   console.log(`请求参数：${requestID}---`, requestData);
                 }
@@ -578,74 +598,99 @@
 
       function extEvent() {
         //客户端扩展列表数据
-        window.A3ExtMessage.on("isSettingsEnabled", (requestData,clientData) => {
-          console.log(`前端收到客户端 isSettingsEnabled：`, clientData);
-          if (clientData.data) showToast(`扩展功能可用!`);
-          else showToast(`扩展功能不可用`);
-          return true;
-        });
-        window.A3ExtMessage.on("getInstalledItems", (requestData,clientData) => {
-          console.log(`前端收到客户端 getInstalledItems：`, clientData);
-          alert(JSON.stringify(clientData, null, 2));
-          return true;
-        });
-
-        window.A3ExtMessage.on("installExtension", (requestData,clientData) => {
-          console.log(`前端收到客户端 installExtension`, clientData);
-          return true;
-        });
-
-        window.A3ExtMessage.on("getExtensionIcon", (requestData, clientData) => {
-          console.log(`前端收到客户端 getExtensionIcon`,requestData, clientData);
-          if (clientData.errCode == 0) {
-            // alert(clientData.data)
-            changeImage(clientData.data);
-          } else {
-            showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+        window.A3ExtMessage.on(
+          "isSettingsEnabled",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 isSettingsEnabled：`, clientData);
+            if (clientData.data) showToast(`扩展功能可用!`);
+            else showToast(`扩展功能不可用`);
+            return true;
           }
+        );
+        window.A3ExtMessage.on(
+          "getInstalledItems",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 getInstalledItems：`, clientData);
+            alert(JSON.stringify(clientData, null, 2));
+            return true;
+          }
+        );
 
-          return true;
-        });
+        window.A3ExtMessage.on(
+          "installExtension",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 installExtension`, clientData);
+            return true;
+          }
+        );
 
-        window.A3ExtMessage.on("removeExtension", (requestData,clientData) => {
+        window.A3ExtMessage.on(
+          "getExtensionIcon",
+          (requestData, clientData) => {
+            console.log(
+              `前端收到客户端 getExtensionIcon`,
+              requestData,
+              clientData
+            );
+            if (clientData.errCode == 0) {
+              // alert(clientData.data)
+              changeImage(clientData.data);
+            } else {
+              showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+            }
+
+            return true;
+          }
+        );
+
+        window.A3ExtMessage.on("removeExtension", (requestData, clientData) => {
           console.log(`前端收到客户端 removeExtension`, clientData);
           showToast(`${window.EXT_ID} ${clientData.errMessage}`);
           return true;
         });
 
-        window.A3ExtMessage.on("isExtensionEnabled", (requestData,clientData) => {
-          console.log(`前端收到客户端 isExtensionEnabled`, clientData);
+        window.A3ExtMessage.on(
+          "isExtensionEnabled",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 isExtensionEnabled`, clientData);
 
-          if (clientData.errCode != 0) {
+            if (clientData.errCode != 0) {
+              showToast(`${window.EXT_ID} ${clientData.errMessage}`);
+              return true;
+            }
+            if (clientData.data == true) {
+              showToast(`${window.EXT_ID} 扩展已启用!`);
+            } else {
+              showToast(`${window.EXT_ID} 扩展已禁用!`);
+            }
+            return true;
+          }
+        );
+
+        window.A3ExtMessage.on(
+          "changeExtensionState",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 changeExtensionState`, clientData);
             showToast(`${window.EXT_ID} ${clientData.errMessage}`);
             return true;
           }
-          if (clientData.data == true) {
-            showToast(`${window.EXT_ID} 扩展已启用!`);
-          } else {
-            showToast(`${window.EXT_ID} 扩展已禁用!`);
+        );
+        window.A3ExtMessage.on(
+          "notifyInstallState",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 notifyInstallState`, clientData);
+            if (clientData.data.state == 1) {
+              showToast(`${clientData.data.id} 开始安装`);
+            } else if (clientData.data.state == 2) {
+              showToast(`${clientData.data.id} 安装中...`);
+            } else if (clientData.data.state == 3) {
+              showToast(`${clientData.data.id} 扩展安装成功!`);
+            } else {
+              showToast(`${clientData.data.id} ${clientData.data.errMessage}!`);
+            }
+            return true;
           }
-          return true;
-        });
-
-        window.A3ExtMessage.on("changeExtensionState", (requestData,clientData) => {
-          console.log(`前端收到客户端 changeExtensionState`, clientData);
-          showToast(`${window.EXT_ID} ${clientData.errMessage}`);
-          return true;
-        });
-        window.A3ExtMessage.on("notifyInstallState", (requestData,clientData) => {
-          console.log(`前端收到客户端 notifyInstallState`, clientData);
-          if (clientData.data.state == 1) {
-            showToast(`${clientData.data.id} 开始安装`);
-          } else if (clientData.data.state == 2) {
-            showToast(`${clientData.data.id} 安装中...`);
-          } else if (clientData.data.state == 3) {
-            showToast(`${clientData.data.id} 扩展安装成功!`);
-          } else {
-            showToast(`${clientData.data.id} ${clientData.data.errMessage}!`);
-          }
-          return true;
-        });
+        );
       }
       function init() {
         if (window._A3_EXTENSION_WEBQUERY_INIT) return;
