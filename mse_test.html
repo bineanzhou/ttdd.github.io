@@ -49,6 +49,22 @@
         margin: 5px;
       }
     </style>
+    
+    <style>
+      /* 默认样式（亮模式） */
+      div {
+          background-color: #FFFFFF; /* 亮模式下的背景色 */
+          color: #000000;            /* 亮模式下的文字颜色 */
+      }
+
+      /* 夜间模式下的样式 */
+      @media (prefers-color-scheme: dark) {
+          div {
+              background-color: #333333; /* 夜间模式下的背景色 */
+              color: #FFFFFF;            /* 夜间模式下的文字颜色 */
+          }
+      }
+  </style>
   </head>
 
   <body>
@@ -180,13 +196,13 @@
         
 
 
-        // if (isDarkMode) {
-        //   document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
-        //   document.body.style.color = "#ffffff"; // Dark mode text color
-        // } else {
-        //   document.body.style.backgroundColor = "#ffffff"; // Light mode background color
-        //   document.body.style.color = "#000000"; // Light mode text color
-        // }
+        if (isDarkMode) {
+          // document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
+          // document.body.style.color = "#ffffff"; // Dark mode text color
+        } else {
+          // document.body.style.backgroundColor = "#ffffff"; // Light mode background color
+          // document.body.style.color = "#000000"; // Light mode text color
+        }
 
         console.log("isDarkMode =", isDarkMode, "backgroundColor=", backgroundColor);
       }
