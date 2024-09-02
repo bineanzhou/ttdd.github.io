@@ -174,16 +174,21 @@
         const isDarkMode =
           window.matchMedia &&
           window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.getElementById("uaInfo").innerHTML = "UA：" + navigator.userAgent + " isDarkMode=" + isDarkMode;
+        var backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+          
+        document.getElementById("uaInfo").innerHTML = "UA：" + navigator.userAgent + " isDarkMode=" + isDarkMode + " backgroundColor=" + backgroundColor;
         
-        console.log("isDarkMode =", isDarkMode);
-        if (isDarkMode) {
-          document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
-          document.body.style.color = "#ffffff"; // Dark mode text color
-        } else {
-          document.body.style.backgroundColor = "#ffffff"; // Light mode background color
-          document.body.style.color = "#000000"; // Light mode text color
-        }
+
+
+        // if (isDarkMode) {
+        //   document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
+        //   document.body.style.color = "#ffffff"; // Dark mode text color
+        // } else {
+        //   document.body.style.backgroundColor = "#ffffff"; // Light mode background color
+        //   document.body.style.color = "#000000"; // Light mode text color
+        // }
+
+        console.log("isDarkMode =", isDarkMode, "backgroundColor=", backgroundColor);
       }
 
       // Listen for changes in the prefers-color-scheme setting
