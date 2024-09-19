@@ -49,22 +49,22 @@
         margin: 5px;
       }
     </style>
-    
+
     <style>
       /* 默认样式（亮模式） */
       div {
-          background-color: #FFFFFF; /* 亮模式下的背景色 */
-          color: #000000;            /* 亮模式下的文字颜色 */
+        background-color: #ffffff; /* 亮模式下的背景色 */
+        color: #000000; /* 亮模式下的文字颜色 */
       }
 
       /* 夜间模式下的样式 */
       @media (prefers-color-scheme: dark) {
-          div {
-              background-color: #333333; /* 夜间模式下的背景色 */
-              color: #FFFFFF;            /* 夜间模式下的文字颜色 */
-          }
+        div {
+          background-color: #333333; /* 夜间模式下的背景色 */
+          color: #ffffff; /* 夜间模式下的文字颜色 */
+        }
       }
-  </style>
+    </style>
   </head>
 
   <body>
@@ -84,54 +84,71 @@
       <!-- 添加一个分割线 -->
       <li
         class="InstallExtension"
-        ext-id="eimadpbcbfnmbkopoojfekhnkhdbieeh"
-        ext-name="dark-reader_4.9.88"
+        ext-id="ddkjiahejlhfcafbddmgiahcphecmpfh"
+        ext-name="uBlock-Origin-Lite-2024.9.12.1004"
       >
-        installExtension(dark-reader_4.9.88)
+        installExtension(uBlock-Origin-Lite-2024.9.12.1004)
       </li>
       <li
         class="InstallExtension"
-        ext-id="jpbjcnkcffbooppibceonlgknpkniiff"
-        ext-name="Global-Speed-3.0.9971"
+        ext-id="bpoadfkcbjbfhfodiogcnhhhpibjhbnh"
+        ext-name="沉浸式翻译-1.9.6"
       >
-        installExtension(Global-Speed-3.0.9971)
-      </li>
-      <li
-        class="InstallExtension"
-        ext-id="lobgmjplponpghhahhmpfhnaiegjipaf"
-        ext-name="Easy-QR-Code-1.0.7"
-      >
-        installExtension(Easy-QR-Code-1.0.7)
-      </li>
-      <li
-        class="InstallExtension"
-        ext-id="hlkenndednhfkekhgcdicdfddnkalmdm"
-        ext-name="Cookie-Editor-1.13.0"
-      >
-        installExtension(Cookie_Editor_1.13.0)
-      </li>
-      <li
-        class="InstallExtension"
-        ext-id="okckmdcaaieknndlpbpjjnfmbakdjnbe"
-        ext-name="Cookie-Manager-0.0.2"
-      >
-        installExtension(Cookie-Manager-0.0.2)
-      </li>
-      <li
-        class="InstallExtension"
-        ext-id="edibdbjcniadpccecjdfdjjppcpchdlm"
-        ext-name="i-still-dont-care-about-cookie-1.1.4"
-      >
-        installExtension(i-still-dont-care-about-cookie-1.1.4)
-      </li>
-      <li
-        class="InstallExtension"
-        ext-id="gcckmgpflcgmojmpblplppomkmcdjlan"
-        ext-name="找券券_3.3.3"
-      >
-        installExtension(找券券_3.3.3)
+        installExtension(沉浸式翻译-1.9.6)
       </li>
 
+      <details>
+        <summary>扩展列表-V1</summary>
+        <li
+          class="InstallExtension"
+          ext-id="eimadpbcbfnmbkopoojfekhnkhdbieeh"
+          ext-name="dark-reader_4.9.88"
+        >
+          installExtension(dark-reader_4.9.88)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="jpbjcnkcffbooppibceonlgknpkniiff"
+          ext-name="Global-Speed-3.0.9971"
+        >
+          installExtension(Global-Speed-3.0.9971)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="lobgmjplponpghhahhmpfhnaiegjipaf"
+          ext-name="Easy-QR-Code-1.0.7"
+        >
+          installExtension(Easy-QR-Code-1.0.7)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="hlkenndednhfkekhgcdicdfddnkalmdm"
+          ext-name="Cookie-Editor-1.13.0"
+        >
+          installExtension(Cookie_Editor_1.13.0)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="okckmdcaaieknndlpbpjjnfmbakdjnbe"
+          ext-name="Cookie-Manager-0.0.2"
+        >
+          installExtension(Cookie-Manager-0.0.2)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="edibdbjcniadpccecjdfdjjppcpchdlm"
+          ext-name="i-still-dont-care-about-cookie-1.1.4"
+        >
+          installExtension(i-still-dont-care-about-cookie-1.1.4)
+        </li>
+        <li
+          class="InstallExtension"
+          ext-id="gcckmgpflcgmojmpblplppomkmcdjlan"
+          ext-name="找券券_3.3.3"
+        >
+          installExtension(找券券_3.3.3)
+        </li>
+      </details>
       <hr />
       <!-- 添加一个分割线 -->
 
@@ -190,11 +207,17 @@
         const isDarkMode =
           window.matchMedia &&
           window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var backgroundColor = window.getComputedStyle(document.body).backgroundColor;
-          
-        document.getElementById("uaInfo").innerHTML = "UA：" + navigator.userAgent + " isDarkMode=" + isDarkMode + " backgroundColor=" + backgroundColor;
-        
+        var backgroundColor = window.getComputedStyle(
+          document.body
+        ).backgroundColor;
 
+        document.getElementById("uaInfo").innerHTML =
+          "UA：" +
+          navigator.userAgent +
+          " isDarkMode=" +
+          isDarkMode +
+          " backgroundColor=" +
+          backgroundColor;
 
         if (isDarkMode) {
           // document.body.style.backgroundColor = "#1a1a1a"; // Dark mode background color
@@ -204,14 +227,19 @@
           // document.body.style.color = "#000000"; // Light mode text color
         }
 
-        console.log("isDarkMode =", isDarkMode, "backgroundColor=", backgroundColor);
+        console.log(
+          "isDarkMode =",
+          isDarkMode,
+          "backgroundColor=",
+          backgroundColor
+        );
       }
 
       // Listen for changes in the prefers-color-scheme setting
       window
         .matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", applyTheme);
-        
+
       // Apply the theme on initial load
       applyTheme();
       document.getElementById("showUA").addEventListener("click", function () {
