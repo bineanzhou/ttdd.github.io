@@ -165,6 +165,7 @@
           >chrome-error://chromewebdata/</a
         >
       </li>
+      <li id="windowOpenUrl">windowOpen(so.com)</li>
       <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
       <li><a href="https://www.sina.cn" target="_blank">新浪</a></li>
       <li>
@@ -385,6 +386,10 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
+      function windowOpenUrl(){
+        console.log("windowOpenUrl");
+        window.open("https://m.so.com", "blank");
+      }
       async function isExtensionEnabled() {
         var reqID = randomString(8);
 
@@ -804,6 +809,10 @@
           .getElementById("getExtensionIcon")
           .addEventListener("click", getExtensionIcon);
 
+        document
+          .getElementById("windowOpenUrl")
+          .addEventListener("click", windowOpenUrl);
+          
         extEvent();
       }
 
