@@ -79,6 +79,16 @@
       <hr />
       <li id="openCrxManagerPage">openCrxManagerPage(本地扩展管理页面)</li>
       <li id="isSettingsEnabled">isSettingsEnabled(扩展功能开关)</li>
+
+      <hr />
+      <label for="responsibility">Choose a responsibility:</label>
+      <select id="responsibility" name="responsibility">
+        <option value="project_management">Project Management</option>
+        <option value="software_development">Software Development</option>
+        <option value="system_design">System Design</option>
+        <option value="quality_assurance">Quality Assurance</option>
+        <option value="technical_support">Technical Support</option>
+      </select>
       <hr />
 
       <!-- 添加一个分割线 -->
@@ -386,7 +396,7 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      function windowOpenUrl(){
+      function windowOpenUrl() {
         console.log("windowOpenUrl");
         window.open("https://m.so.com", "blank");
       }
@@ -812,7 +822,7 @@
         document
           .getElementById("windowOpenUrl")
           .addEventListener("click", windowOpenUrl);
-          
+
         extEvent();
       }
 
