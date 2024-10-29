@@ -188,6 +188,10 @@
 
       <li id="showUA">点击显示UA</li>
     </ul>
+    <div id="popup" class="popup">
+      <p id="popup-message"></p>
+      <button onclick="closePopup()">关闭</button>
+    </div>
 
     <div id="toast" class="toast">
       <span class="message">This is a toast message!</span>
@@ -197,6 +201,16 @@
     <h2 style="margin: 5px">Console Output:</h2>
     <div id="consoleOutput"></div>
     <script>
+      function showPopup(message) {
+        const popup = document.getElementById("popup");
+        document.getElementById("popup-message").textContent = message; // 设置弹窗内容
+        popup.classList.add("show");
+      }
+      function closePopup() {
+        const popup = document.getElementById("popup");
+        popup.classList.remove("show");
+      }
+
       function showToast(message, duration = 3000) {
         const toast = document.getElementById("toast");
         toast.querySelector(".message").textContent = message;
@@ -212,7 +226,7 @@
         // 获取用户代理信息
         const userAgent = navigator.userAgent;
         // 显示用户代理信息
-        alert("User Agent: " + userAgent);
+        showPopup("User Agent: " + userAgent);
       }
       function applyTheme() {
         const isDarkMode =
