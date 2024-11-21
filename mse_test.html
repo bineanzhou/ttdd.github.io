@@ -176,6 +176,7 @@
         >
       </li>
       <li id="windowOpenUrl">windowOpen(so.com)</li>
+      <li id="closeWindow">closeWindow()</li>
       <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
       <li><a href="https://www.sina.cn" target="_blank">新浪</a></li>
       <li>
@@ -413,6 +414,10 @@
       function windowOpenUrl() {
         console.log("windowOpenUrl");
         window.open("https://m.so.com", "blank");
+      }
+      function closeWindow() {
+        console.log("closeWindow");
+        window.close();
       }
       async function isExtensionEnabled() {
         var reqID = randomString(8);
@@ -836,7 +841,10 @@
         document
           .getElementById("windowOpenUrl")
           .addEventListener("click", windowOpenUrl);
-
+        document
+          .getElementById("closeWindow")
+          .addEventListener("click", closeWindow);
+          
         extEvent();
       }
 
