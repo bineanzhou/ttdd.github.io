@@ -162,12 +162,17 @@
       <hr />
       <!-- 添加一个分割线 -->
 
+      <li id="getDevModeEnabled">getDevModeEnabled(获取开发者模式状态)</li>
+      <li id="setDevModeEnabled">setDevModeEnabled(修改开发者模式)</li>
+      
+      
       <li id="getInstallState">getInstallState(获取扩展安装状态)</li>
       <li id="getExtensionIcon">getExtensionIcon(获取扩展ICON)</li>
       <li id="getInstalledItems">getInstalledItems(获取已安装扩展列表)</li>
       <li id="removeExtension">removeExtension(删除扩展)</li>
       <li id="changeExtensionState">changeExtensionState(禁用启用扩展)</li>
       <li id="isExtensionEnabled">isExtensionEnabled(扩展是否可用)</li>
+      
       <hr />
       <!-- 添加一个分割线 -->
       <li>
@@ -175,7 +180,7 @@
           >chrome-error://chromewebdata/</a
         >
       </li>
-      <li id="windowOpenUrl">windowOpen(so.com)</li>
+      <li id="windowOpenUrl">windowOpen(github)</li>
       <li id="closeWindow">closeWindow()</li>
       <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
       <li><a href="https://www.sina.cn" target="_blank">新浪</a></li>
@@ -412,8 +417,10 @@
       }
 
       function windowOpenUrl() {
-        console.log("windowOpenUrl");
-        window.open("https://m.so.com", "blank");
+        // console.log("windowOpenUrl");
+        // window.open("https://m.so.com", "blank");
+        
+        const popup = window.open("https://bineanzhou.github.io/dev.github.io/mse_test.html", "example", "width=600,height=600");
       }
       function closeWindow() {
         console.log("closeWindow");
@@ -433,6 +440,48 @@
         var result = Math.random() >= 0.5;
 
         mockClientMessage("isExtensionEnabled", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: "ok",
+          data: result,
+        });
+      }
+      
+      async function getDevModeEnabled() {
+        var reqID = randomString(8);
+
+        A3ExtMessage.send(
+          "$a3com_message_cmd:getDevModeEnabled",
+          { },
+          {
+            requestID: reqID,
+          }
+        );
+
+        var result = Math.random() >= 0.5;
+        mockClientMessage("getDevModeEnabled", {
+          requestID: reqID,
+          common: {},
+          errCode: 0,
+          errMessage: "ok",
+          data: result,
+        });
+      }
+      
+      async function setDevModeEnabled() {
+        var reqID = randomString(8);
+
+        var result = Math.random() >= 0.5;
+        A3ExtMessage.send(
+          "$a3com_message_cmd:setDevModeEnabled",
+          { enable: result },
+          {
+            requestID: reqID,
+          }
+        );
+
+        mockClientMessage("setDevModeEnabled", {
           requestID: reqID,
           common: {},
           errCode: 0,
@@ -749,6 +798,44 @@
             return true;
           }
         );
+        window.A3ExtMessage.on(
+          "getDevModeEnabled",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 getDevModeEnabled`, clientData);
+
+            if (clientData.errCode != 0) {
+              showToast(`${clientData.errMessage}`);
+              return true;
+            }
+            if (clientData.data == true) {
+              window.DEV_MODE_ENABLED = true;
+              showToast(`已开启开发者模式!`);
+            } else {
+              window.DEV_MODE_ENABLED = false;
+              showToast(`已关闭开发者模式!`);
+            }
+            return true;
+          }
+        );
+        window.A3ExtMessage.on(
+          "setDevModeEnabled",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 setDevModeEnabled`, clientData);
+
+            if (clientData.errCode != 0) {
+              showToast(`${clientData.errMessage}`);
+              return true;
+            }
+            if (clientData.data == true) {
+              window.DEV_MODE_ENABLED = true;
+              showToast(`已开启开发者模式!`);
+            } else {
+              window.DEV_MODE_ENABLED = false;
+              showToast(`已关闭开发者模式!`);
+            }
+            return true;
+          }
+        );
 
         window.A3ExtMessage.on(
           "changeExtensionState",
@@ -779,6 +866,7 @@
         if (window._A3_EXTENSION_WEBQUERY_INIT) return;
         window._A3_EXTENSION_WEBQUERY_INIT = true;
         window.EXT_ID = "ifoakfbpdcdoeenechcleahebpibofpc";
+        window.DEV_MODE_ENABLED = false;
         window.EXT_NAME = "Dark_Reader_4.9.87";
         console.log("ext init");
         if (!window.A3ExtMessage) {
@@ -834,6 +922,13 @@
         document
           .getElementById("isExtensionEnabled")
           .addEventListener("click", isExtensionEnabled);
+        document
+          .getElementById("getDevModeEnabled")
+          .addEventListener("click", getDevModeEnabled);
+        document
+          .getElementById("setDevModeEnabled")
+          .addEventListener("click", setDevModeEnabled);
+          
         document
           .getElementById("getExtensionIcon")
           .addEventListener("click", getExtensionIcon);
