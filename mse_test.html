@@ -161,7 +161,8 @@
       </details>
       <hr />
       <!-- 添加一个分割线 -->
-
+      
+      <li id="installLocalExtension">installLocalExtension(安装本地扩展)</li>
       <li id="getDevModeEnabled">getDevModeEnabled(获取开发者模式状态)</li>
       <li id="setDevModeEnabled">setDevModeEnabled(修改开发者模式)</li>
       
@@ -323,6 +324,17 @@
         A3ExtMessage.send(
           "$a3com_message_cmd:onBackPressed",
           {},
+          {
+            requestID: reqID,
+          }
+        );
+      }
+      async function installLocalExtension() {
+        var reqID = randomString(8);
+
+        A3ExtMessage.send(
+          "$a3ext_message_cmd:installLocalExtension",
+          {  },
           {
             requestID: reqID,
           }
@@ -560,6 +572,7 @@
           common: {},
         });
       }
+      
 
       function getExtensionIcon() {
         //发送请求给客户端
@@ -799,6 +812,17 @@
           }
         );
         window.A3ExtMessage.on(
+          "installLocalExtension",
+          (requestData, clientData) => {
+            console.log(`前端收到客户端 getDevModeEnabled`, clientData);
+            if (clientData.errCode != 0) {
+              showToast(`${clientData.errMessage}`);
+              return true;
+            }
+            return true;
+          }
+        );
+        window.A3ExtMessage.on(
           "getDevModeEnabled",
           (requestData, clientData) => {
             console.log(`前端收到客户端 getDevModeEnabled`, clientData);
@@ -922,6 +946,11 @@
         document
           .getElementById("isExtensionEnabled")
           .addEventListener("click", isExtensionEnabled);
+          
+        document
+          .getElementById("installLocalExtension")
+          .addEventListener("click", installLocalExtension);
+        document
         document
           .getElementById("getDevModeEnabled")
           .addEventListener("click", getDevModeEnabled);
